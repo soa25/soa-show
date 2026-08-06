@@ -30,6 +30,7 @@ const PRICES: Record<string, number> = {
   "watching bird":     800,
   "joyful trio":       4800,
   "the ballerina":     5200,
+  "family time":       12500,
 };
 
 // Sculptors keyed by lowercase title (only for non-Dominic works)
@@ -69,6 +70,7 @@ const MATERIALS: Record<string, string> = {
   "watching bird":     "Cobalt",
   "joyful trio":       "Springstone",
   "the ballerina":     "Springstone and Dolomite",
+  "family time":       "Springstone",
 };
 
 // Dimensions keyed by lowercase title (× is the multiplication sign U+00D7)
@@ -95,6 +97,7 @@ const DIMENSIONS: Record<string, string> = {
   "watching bird":     "17.5 × 8 × 3 in",
   "joyful trio":       "24 × 16 × 8 in",
   "the ballerina":     "26 × 19 × 7 in",
+  "family time":       "58 × 18 × 8 in",
 };
 
 // Known sculptor name suffixes to strip from filenames before titling.

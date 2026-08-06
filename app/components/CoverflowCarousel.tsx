@@ -28,6 +28,7 @@ const HOUSE_OF_STONE_TITLES = new Set([
   "watching bird",
   "the ballerina",
   "joyful trio",
+  "family time",
 ]);
 
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
