@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --background: #2C3B2D;
+  --foreground: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Lock the viewport — no scroll, no bounce, native-app feel */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--background);
+  color: var(--foreground);
+  /* Prevent iOS Safari momentum bounce on the body level */
+  position: fixed;
+  width: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
