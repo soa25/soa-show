@@ -31,6 +31,7 @@ const PRICES: Record<string, number> = {
   "joyful trio":       4800,
   "the ballerina":     5200,
   "family time":       12500,
+  "paired for life":   5000,
 };
 
 // Sculptors keyed by lowercase title (only for non-Dominic works)
@@ -71,6 +72,7 @@ const MATERIALS: Record<string, string> = {
   "joyful trio":       "Springstone",
   "the ballerina":     "Springstone and Dolomite",
   "family time":       "Springstone",
+  "paired for life":   "Springstone",
 };
 
 // Dimensions keyed by lowercase title (× is the multiplication sign U+00D7)
