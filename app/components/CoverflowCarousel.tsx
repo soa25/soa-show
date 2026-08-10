@@ -604,7 +604,13 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                             <p className="text-white/60 text-[9px] tracking-[0.18em] uppercase">
                               {s.sculptor}
                             </p>
-                            {s.price ? (
+                            {s.title.toLowerCase() === "happy trio" ? (
+                              <p
+                                style={{ fontSize: "0.8rem", fontWeight: 300, letterSpacing: "0.05em", color: "#c0392b" }}
+                              >
+                                Sold
+                              </p>
+                            ) : s.price ? (
                               <p
                                 className="text-white/75"
                                 style={{ fontSize: "0.8rem", fontWeight: 300, letterSpacing: "0.05em" }}
