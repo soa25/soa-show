@@ -30,6 +30,13 @@ const HOUSE_OF_STONE_TITLES = new Set([
   "paired for life",
 ]);
 
+// Titles marked as sold — show "Sold" in red instead of price.
+const SOLD_TITLES = new Set([
+  "happy trio",
+  "proud of my hair",
+  "joyful trio",
+]);
+
 // Titles sold directly through Dominic — no gallery label, different contact.
 const BENHURA_DIRECT_TITLES = new Set([
   "the ballerina",
@@ -608,7 +615,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                             <p className="text-white/60 text-[9px] tracking-[0.18em] uppercase">
                               {s.sculptor}
                             </p>
-                            {s.title.toLowerCase() === "happy trio" ? (
+                            {SOLD_TITLES.has(s.title.toLowerCase()) ? (
                               <p
                                 style={{ fontSize: "0.8rem", fontWeight: 300, letterSpacing: "0.05em", color: "#c0392b" }}
                               >
