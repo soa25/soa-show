@@ -26,10 +26,14 @@ const HOUSE_OF_STONE_TITLES = new Set([
   "flying birds",
   "torso",
   "watching bird",
-  "the ballerina",
   "joyful trio",
-  "family time",
   "paired for life",
+]);
+
+// Titles sold directly through Dominic — no gallery label, different contact.
+const BENHURA_DIRECT_TITLES = new Set([
+  "the ballerina",
+  "family time",
 ]);
 
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
@@ -619,7 +623,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                               </p>
                             ) : null}
                           </div>
-                          {HOUSE_OF_STONE_TITLES.has(s.title.toLowerCase()) ? (
+                          {BENHURA_DIRECT_TITLES.has(s.title.toLowerCase()) ? null : HOUSE_OF_STONE_TITLES.has(s.title.toLowerCase()) ? (
                             <p
                               className="text-right"
                               style={{
@@ -694,10 +698,12 @@ export default function CoverflowCarousel({ sculptures }: Props) {
       {/* ── Inquire modal ── */}
       {(() => {
         const s = sculptures[inquireIndex ?? displayIndex];
-        const isHouseOfStone = s ? HOUSE_OF_STONE_TITLES.has(s.title.toLowerCase()) : false;
-        const contact = isHouseOfStone
-          ? { gallery: "House of Stone", email: "sales@houseofstone-ngo.org", phone: null }
-          : { gallery: "Slab of Africa",  email: "shaan@slabofafrica.com",      phone: "+1 925 326 8551" };
+        const titleKey = s?.title.toLowerCase() ?? "";
+        const contact = BENHURA_DIRECT_TITLES.has(titleKey)
+          ? { gallery: null,             email: "dbenhura@mweb.co.zw",         phone: null }
+          : HOUSE_OF_STONE_TITLES.has(titleKey)
+          ? { gallery: "House of Stone", email: "sales@houseofstone-ngo.org",  phone: null }
+          : { gallery: "Slab of Africa", email: "shaan@slabofafrica.com",       phone: "+1 925 326 8551" };
         return (
           <AnimatePresence>
             {inquireIndex !== null && (
@@ -752,7 +758,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                     <p className="text-white/45 text-[11px] tracking-[0.04em]" style={{ fontWeight: 300 }}>
                       To purchase this piece please contact
                     </p>
-                    <p className="text-[8px] tracking-[0.28em] uppercase text-white/28">{contact.gallery}</p>
+                    {contact.gallery && <p className="text-[8px] tracking-[0.28em] uppercase text-white/28">{contact.gallery}</p>}
                     <a
                       href={`mailto:${contact.email}`}
                       className="text-white/70 hover:text-white transition-colors"
