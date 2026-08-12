@@ -28,6 +28,7 @@ const HOUSE_OF_STONE_TITLES = new Set([
   "watching bird",
   "joyful trio",
   "paired for life",
+  "peacock",
 ]);
 
 // Titles marked as sold — show "Sold" in red instead of price.
