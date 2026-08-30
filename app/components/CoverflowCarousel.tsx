@@ -52,6 +52,11 @@ const DISCOUNT_PERCENTS: Record<string, number> = {
   "learners": 40,
 };
 
+// Titles with a small handwritten-style note shown below the price.
+const PRICE_NOTES: Record<string, string> = {
+  "learners": "We had an accident and damaged our book",
+};
+
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
 const FRICTION        = 0.978; // velocity multiplier per frame (≈ 2 s deceleration)
 const FRAME_MS        = 16.67; // target rAF interval, used to convert px/ms → card-units/frame
@@ -657,6 +662,21 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                               </span>
                             ) : null}
                           </div>
+                          {PRICE_NOTES[s.title.toLowerCase()] && (
+                            <p
+                              style={{
+                                fontFamily: "var(--font-cormorant)",
+                                fontStyle: "italic",
+                                fontSize: "12px",
+                                fontWeight: 300,
+                                color: "rgba(255,255,255,0.5)",
+                                letterSpacing: "0.01em",
+                                marginBottom: "4px",
+                              }}
+                            >
+                              {PRICE_NOTES[s.title.toLowerCase()]}
+                            </p>
+                          )}
                           {BENHURA_DIRECT_TITLES.has(s.title.toLowerCase()) ? null : HOUSE_OF_STONE_TITLES.has(s.title.toLowerCase()) ? (
                             <p
                               className="text-right"
