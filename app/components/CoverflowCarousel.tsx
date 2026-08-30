@@ -42,7 +42,15 @@ const SOLD_TITLES = new Set([
 const BENHURA_DIRECT_TITLES = new Set([
   "the ballerina",
   "family time",
+  "dancer",
 ]);
+
+// Titles with a discount — percentage shown as a small tag beside the price.
+const DISCOUNT_PERCENTS: Record<string, number> = {
+  "dancer": 25,
+  "imagination": 25,
+  "learners": 40,
+};
 
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
 const FRICTION        = 0.978; // velocity multiplier per frame (≈ 2 s deceleration)
@@ -623,12 +631,30 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                                 Sold
                               </p>
                             ) : s.price ? (
-                              <p
-                                className="text-white/75"
-                                style={{ fontSize: "0.8rem", fontWeight: 300, letterSpacing: "0.05em" }}
-                              >
-                                ${s.price.toLocaleString()}
-                              </p>
+                              <span className="flex items-baseline gap-1.5">
+                                {DISCOUNT_PERCENTS[s.title.toLowerCase()] && (
+                                  <span
+                                    style={{
+                                      fontSize: "10px",
+                                      fontWeight: 600,
+                                      letterSpacing: "0.04em",
+                                      color: "#e8bd6a",
+                                      background: "rgba(201,162,75,0.16)",
+                                      border: "1px solid rgba(232,189,106,0.6)",
+                                      borderRadius: "3px",
+                                      padding: "2px 6px",
+                                    }}
+                                  >
+                                    {DISCOUNT_PERCENTS[s.title.toLowerCase()]}% off
+                                  </span>
+                                )}
+                                <p
+                                  className="text-white/75"
+                                  style={{ fontSize: "0.8rem", fontWeight: 300, letterSpacing: "0.05em" }}
+                                >
+                                  ${s.price.toLocaleString()}
+                                </p>
+                              </span>
                             ) : null}
                           </div>
                           {BENHURA_DIRECT_TITLES.has(s.title.toLowerCase()) ? null : HOUSE_OF_STONE_TITLES.has(s.title.toLowerCase()) ? (

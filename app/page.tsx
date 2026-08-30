@@ -22,9 +22,9 @@ const PRICES: Record<string, number> = {
   "swallow":           3000,
   "traveling mum":     2000,
   "proud of my hair":  4000,
-  "learners":          1300,
+  "learners":          800,
   "life cycle":        1000,
-  "imagination":       2400,
+  "imagination":       1800,
   "flying birds":      3700,
   "torso":             2000,
   "watching bird":     800,
@@ -33,6 +33,7 @@ const PRICES: Record<string, number> = {
   "family time":       12500,
   "paired for life":   5000,
   "peacock":           5500,
+  "dancer":            10000,
 };
 
 // Sculptors keyed by lowercase title (only for non-Dominic works)
@@ -75,6 +76,7 @@ const MATERIALS: Record<string, string> = {
   "family time":       "Springstone",
   "paired for life":   "Springstone",
   "peacock":           "Springstone and Dolomite",
+  "dancer":            "Springstone and Dolomite",
 };
 
 // Dimensions keyed by lowercase title (× is the multiplication sign U+00D7)
