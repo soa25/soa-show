@@ -54,7 +54,7 @@ const DISCOUNT_PERCENTS: Record<string, number> = {
 
 // Titles with a small handwritten-style note shown below the price.
 const PRICE_NOTES: Record<string, string> = {
-  "learners": "We had an accident and damaged our book",
+  "learners": "We had an accident and had some minor repair",
 };
 
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
