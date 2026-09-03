@@ -71,9 +71,9 @@ function calcDims(vw: number, vh: number) {
   const cardW = Math.min(340, Math.floor(vw * 0.80));
 
   // Card height: maintain 320:504 aspect ratio, but never overflow the UI chrome.
-  // UI chrome = header (~52px) + controls (~72px) + footer (~36px) ≈ 140px total.
+  // UI chrome = header (~52px) + controls (~72px) + footer (~44px) ≈ 168px total.
   const byAspect   = Math.floor(cardW * (504 / 320));
-  const byViewport = vh - 140;
+  const byViewport = vh - 168;
   const cardH      = Math.max(Math.min(byAspect, byViewport, 535), 260);
 
   // X offsets: scale from desktop values, then clamp so side cards always peek MIN_PEEK px.
@@ -738,15 +738,38 @@ export default function CoverflowCarousel({ sculptures }: Props) {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="shrink-0 flex items-center justify-between px-5 py-3 sm:px-10 sm:py-7 border-t border-white/[0.04]">
-        <p className="text-[8px] tracking-[0.4em] uppercase text-white/14">
-          All works available for acquisition
-        </p>
-        <p className="text-white/14 text-[9px] tracking-[0.35em] font-mono">
-          {String(displayIndex + 1).padStart(2, "0")}
-          &nbsp;—&nbsp;
-          {String(sculptures.length).padStart(2, "0")}
-        </p>
+      <footer className="shrink-0 overflow-x-auto border-t border-white/[0.04]">
+        <div className="grid grid-cols-3 items-center gap-3 px-5 py-3 sm:px-10 sm:py-5 min-w-max sm:min-w-0 mx-auto">
+          <p className="justify-self-start whitespace-nowrap text-[7px] sm:text-[8px] tracking-[0.25em] sm:tracking-[0.4em] uppercase text-white/14">
+            All works available for acquisition
+          </p>
+
+          <form
+            action="https://formspree.io/f/mqpkblbl"
+            method="POST"
+            className="justify-self-center flex items-center gap-2"
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Email"
+              className="bg-transparent border-b border-white/15 focus:border-white/40 outline-none text-white/70 placeholder-white/25 text-[9px] sm:text-[10px] tracking-[0.05em] py-1 w-16 sm:w-40 transition-colors"
+            />
+            <button
+              type="submit"
+              className="whitespace-nowrap text-[7px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/40 hover:text-white/80 transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
+
+          <p className="justify-self-end whitespace-nowrap text-white/14 text-[8px] sm:text-[9px] tracking-[0.25em] sm:tracking-[0.35em] font-mono">
+            {String(displayIndex + 1).padStart(2, "0")}
+            &nbsp;—&nbsp;
+            {String(sculptures.length).padStart(2, "0")}
+          </p>
+        </div>
       </footer>
 
       {/* ── Inquire modal ── */}
