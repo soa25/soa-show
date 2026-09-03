@@ -60,7 +60,6 @@ const PRICE_NOTES: Record<string, string> = {
 const MIN_PEEK        = 24;    // minimum px a side card must show on screen
 const FRICTION        = 0.978; // velocity multiplier per frame (≈ 2 s deceleration)
 const FRAME_MS        = 16.67; // target rAF interval, used to convert px/ms → card-units/frame
-const TOUCH_VEL_SCALE = 0.38;  // scales touch release velocity — tune for feel
 const SNAP_SPRING     = 0.20;  // spring coefficient for post-momentum card snap
 
 // ─── Responsive dimension calculator ─────────────────────────────────────────
@@ -398,7 +397,8 @@ export default function CoverflowCarousel({ sculptures }: Props) {
       if (axis !== "h") { axis = null; return; }
       axis = null;
 
-      // Derive velocity from recent samples.
+      // Derive velocity from recent samples, unscaled — the finger's actual release
+      // speed carries straight into momentum, same as a trackpad's native inertia.
       // Convert px/ms → card-units/frame so the momentum step (which runs per rAF)
       // adds the right amount per frame instead of a near-zero per-ms value.
       const samples = velSamplesRef.current;
@@ -407,7 +407,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
         const dt = newest.t - oldest.t;
         if (dt > 0) {
           velRef.current =
-            -(newest.x - oldest.x) / dt * FRAME_MS / cardWRef.current * TOUCH_VEL_SCALE;
+            -(newest.x - oldest.x) / dt * FRAME_MS / cardWRef.current;
         }
       }
       startMomentum();
