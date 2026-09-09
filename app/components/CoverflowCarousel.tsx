@@ -713,7 +713,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
         </div>
 
         {/* Purchase button — direct tel: link, no modal */}
-        <div className="shrink-0 mt-4 sm:mt-8">
+        <div className="shrink-0 mt-8 sm:mt-8">
           <a
             href="tel:+19253268551"
             className="inline-block px-10 py-3 text-[10px] tracking-[0.35em] uppercase bg-[#D6D2CC] text-[#111] hover:bg-[#E2DFDA] transition-all duration-200"
