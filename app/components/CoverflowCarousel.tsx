@@ -184,7 +184,6 @@ export default function CoverflowCarousel({ sculptures }: Props) {
   const [displayIndex, setDisplayIndex] = useState(0); // nearest centred card
   const [menuOpen,     setMenuOpen]     = useState(false);
   const [aboutOpen,    setAboutOpen]    = useState(false);
-  const [inquireIndex, setInquireIndex] = useState<number | null>(null);
 
   // ── Responsive dimensions ─────────────────────────────────────────────────
   const [cardW, setCardW] = useState(340);
@@ -252,7 +251,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
         `translateX(${s.x}px) translateZ(${s.z}px) scale(${s.scale}) rotateY(${s.rotateY}deg)`;
     });
 
-    // Sync the counter / inquire modal (cheap integer comparison)
+    // Sync the counter (cheap integer comparison)
     const ni = Math.max(0, Math.min(sculptures.length - 1, Math.round(pos)));
     if (ni !== displayIdxRef.current) {
       displayIdxRef.current = ni;
@@ -458,7 +457,6 @@ export default function CoverflowCarousel({ sculptures }: Props) {
   };
   const onPointerUp = (e: React.PointerEvent) => {
     if (!ptrStartRef.current) return;
-    const wasTap = !isDragRef.current;
     ptrStartRef.current = null;
     const samples = ptrSamplesRef.current;
     if (samples.length >= 2) {
@@ -467,17 +465,7 @@ export default function CoverflowCarousel({ sculptures }: Props) {
       if (dt > 0) velRef.current = -(newest.x - oldest.x) / dt / cardWRef.current;
     }
     startMomentum();
-    // setPointerCapture routes pointerup to the row, so click never reaches the card.
-    // Detect taps here instead using pointer coordinates vs card bounding rects.
-    if (wasTap) {
-      const px = e.clientX, py = e.clientY;
-      const idx = cardEls.current.findIndex(el => {
-        if (!el) return false;
-        const r = el.getBoundingClientRect();
-        return px >= r.left && px <= r.right && py >= r.top && py <= r.bottom;
-      });
-      if (idx !== -1) setInquireIndex(idx);
-    }
+    // Tapping a card is inert — only the Purchase button initiates contact.
   };
   const onPointerCancel = () => { ptrStartRef.current = null; velRef.current = 0; };
 
@@ -555,7 +543,6 @@ export default function CoverflowCarousel({ sculptures }: Props) {
               <div
                 key={s.id}
                 ref={el => { if (el) cardEls.current[i] = el; }}
-                onClick={() => { if (!isDragRef.current) setInquireIndex(i); }}
                 style={{
                   position: "absolute",
                   left: `calc(50% - ${cardW / 2}px)`,
@@ -571,8 +558,8 @@ export default function CoverflowCarousel({ sculptures }: Props) {
                   className="relative w-full h-full overflow-hidden"
                   style={{
                     boxShadow: i === displayIndex
-                      ? "0 40px 90px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.06)"
-                      : "0 20px 50px rgba(0,0,0,0.7)",
+                      ? "0 20px 45px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.06)"
+                      : "0 12px 30px rgba(0,0,0,0.7)",
                   }}
                 >
                       {/* Photo — black background so sculptures bleed seamlessly */}
@@ -725,14 +712,14 @@ export default function CoverflowCarousel({ sculptures }: Props) {
           </button>
         </div>
 
-        {/* Inquire button */}
+        {/* Purchase button — direct tel: link, no modal */}
         <div className="shrink-0 mt-4 sm:mt-8">
-          <button
-            onClick={() => setInquireIndex(displayIndex)}
-            className="px-10 py-3 text-[10px] tracking-[0.35em] uppercase bg-[#D6D2CC] text-[#111] hover:bg-[#E2DFDA] transition-all duration-200"
+          <a
+            href="tel:+19253268551"
+            className="inline-block px-10 py-3 text-[10px] tracking-[0.35em] uppercase bg-[#D6D2CC] text-[#111] hover:bg-[#E2DFDA] transition-all duration-200"
           >
-            Inquire
-          </button>
+            Purchase
+          </a>
         </div>
 
       </main>
@@ -772,93 +759,6 @@ export default function CoverflowCarousel({ sculptures }: Props) {
         </div>
       </footer>
 
-      {/* ── Inquire modal ── */}
-      {(() => {
-        const s = sculptures[inquireIndex ?? displayIndex];
-        const titleKey = s?.title.toLowerCase() ?? "";
-        const contact = BENHURA_DIRECT_TITLES.has(titleKey)
-          ? { gallery: null,             email: "dbenhura@mweb.co.zw",         phone: null }
-          : HOUSE_OF_STONE_TITLES.has(titleKey)
-          ? { gallery: "House of Stone", email: "sales@houseofstone-ngo.org",  phone: null }
-          : { gallery: "Slab of Africa", email: "shaan@slabofafrica.com",       phone: "+1 925 326 8551" };
-        return (
-          <AnimatePresence>
-            {inquireIndex !== null && (
-              <motion.div
-                className="fixed inset-0 z-40 flex items-center justify-center p-6"
-                style={{ background: "rgba(5, 14, 5, 0.92)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                onClick={() => setInquireIndex(null)}
-              >
-                <motion.div
-                  className="relative w-full max-w-xs flex flex-col gap-6 p-8"
-                  style={{ background: "#0e180e", border: "1px solid rgba(255,255,255,0.08)" }}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 12 }}
-                  transition={{ duration: 0.22, delay: 0.04 }}
-                  onClick={e => e.stopPropagation()}
-                >
-                  {/* X */}
-                  <button
-                    onClick={() => setInquireIndex(null)}
-                    aria-label="Close"
-                    className="absolute top-4 right-4 text-white/25 hover:text-white/65 transition-colors"
-                  >
-                    <CloseIcon />
-                  </button>
-
-                  {/* Sculpture title */}
-                  <div>
-                    <p className="text-[8px] tracking-[0.3em] uppercase text-white/28 mb-1">Inquire</p>
-                    <h3
-                      style={{
-                        fontFamily: "var(--font-cormorant)",
-                        fontSize: "1.45rem",
-                        fontWeight: 300,
-                        letterSpacing: "0.01em",
-                        color: "rgba(255,255,255,0.88)",
-                      }}
-                    >
-                      {s?.title}
-                    </h3>
-                  </div>
-
-                  {/* Divider */}
-                  <div style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
-
-                  {/* Contact details */}
-                  <div className="flex flex-col gap-4">
-                    <p className="text-white/45 text-[11px] tracking-[0.04em]" style={{ fontWeight: 300 }}>
-                      To purchase this piece please contact
-                    </p>
-                    {contact.gallery && <p className="text-[8px] tracking-[0.28em] uppercase text-white/28">{contact.gallery}</p>}
-                    <a
-                      href={`mailto:${contact.email}`}
-                      className="text-white/70 hover:text-white transition-colors"
-                      style={{ fontSize: "0.82rem", letterSpacing: "0.02em", fontWeight: 300 }}
-                    >
-                      {contact.email}
-                    </a>
-                    {contact.phone && (
-                      <a
-                        href={`tel:${contact.phone.replace(/\s/g, "")}`}
-                        className="text-white/70 hover:text-white transition-colors"
-                        style={{ fontSize: "0.82rem", letterSpacing: "0.02em", fontWeight: 300 }}
-                      >
-                        {contact.phone}
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        );
-      })()}
 
       {/* ── Menu overlay ── */}
       <AnimatePresence>
