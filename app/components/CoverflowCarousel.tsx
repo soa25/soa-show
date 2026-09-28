@@ -36,6 +36,7 @@ const SOLD_TITLES = new Set([
   "happy trio",
   "proud of my hair",
   "joyful trio",
+  "swallow",
 ]);
 
 // Titles sold directly through Dominic — no gallery label, different contact.
