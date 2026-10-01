@@ -713,10 +713,21 @@ export default function CoverflowCarousel({ sculptures }: Props) {
           </button>
         </div>
 
-        {/* Purchase button — direct sms: link, no modal */}
+        {/* Purchase button — sms: on mobile, mailto: on desktop, no modal */}
         <div className="shrink-0 mt-8 sm:mt-8">
           <a
             href="sms:+19253268551"
+            onClick={e => {
+              e.preventDefault();
+              const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+              if (isMobile) {
+                window.location.href = "sms:+19253268551";
+              } else {
+                const sculptureName = sculptures[displayIndex]?.title ?? "";
+                const subject = encodeURIComponent(`Purchase Inquiry: ${sculptureName}`);
+                window.location.href = `mailto:shaan@slabofafrica.com?subject=${subject}`;
+              }
+            }}
             className="inline-block px-10 py-3 text-[10px] tracking-[0.35em] uppercase bg-[#D6D2CC] text-[#111] hover:bg-[#E2DFDA] transition-all duration-200"
           >
             Purchase
